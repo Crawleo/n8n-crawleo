@@ -1,0 +1,20 @@
+{
+	"node": "n8n-nodes-base.Crawleo",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": [
+		"Search"
+	],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://www.crawleo.dev/docs"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://www.crawleo.dev"
+			}
+		]
+	}
+}

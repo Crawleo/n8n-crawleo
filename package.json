@@ -1,0 +1,57 @@
+{
+  "name": "@crawleo/n8n-nodes-crawleo",
+  "version": "0.3.1",
+  "description": "Crawleo community node for n8n to access real-time search and crawler APIs.",
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "license": "MIT",
+  "homepage": "https://crawleo.dev",
+  "author": {
+    "name": "Crawleo",
+    "email": "support@crawleo.dev",
+    "url": "https://crawleo.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Crawleo/n8n-crawleo.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons && npm link",
+    "deploy": "tsc && gulp build:icons && npm link && cd ~/.n8n/custom && npm link @crawleo/n8n-nodes-crawleo",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/CrawleoApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Crawleo/Crawleo.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "~5.45",
+    "braces": "^3.0.3",
+    "eslint-plugin-n8n-nodes-base": "^1.11.0",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "*",
+    "prettier": "^2.7.1",
+    "typescript": "~4.8.4"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "resolutions": {
+    "lodash": "0.0.0-does-not-exist",
+    "lodash.merge": "0.0.0-does-not-exist"
+  }
+}
