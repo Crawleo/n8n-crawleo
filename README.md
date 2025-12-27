@@ -82,6 +82,3 @@ Crawleo uses subscription-based pricing. See [crawleo.dev/pricing](https://www.c
 - MCP Endpoint: https://www.crawleo.dev/mcp
 - Website: https://crawleo.dev
 
-## License
-
-MIT
