@@ -3,6 +3,7 @@ import type {
 	IExecuteFunctions,
 	IHookFunctions,
 	IHttpRequestMethods,
+	IHttpRequestOptions,
 	ILoadOptionsFunctions,
 	IRequestOptions,
 } from 'n8n-workflow';
@@ -47,11 +48,14 @@ export async function crawleoApiRequest(
 			delete options.body;
 		}
 
-		return await this.helpers.requestWithAuthentication.call(
-			this,
-			'crawleoApi',
-			options,
-		);
+		const httpOptions: IHttpRequestOptions = {
+			url: options.uri as string,
+			method: options.method,
+			headers: options.headers,
+			qs: options.qs,
+			body: options.body,
+		};
+		return await this.helpers.httpRequestWithAuthentication.call(this, 'crawleoApi', httpOptions);
 	} catch (error) {
 
 		throw error;
