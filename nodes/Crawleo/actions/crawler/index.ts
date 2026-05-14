@@ -1,8 +1,9 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 import * as urls from './urls.operation';
+import * as headfulBrowser from './headfulBrowser.operation';
 
-export { urls };
+export { urls, headfulBrowser };
 
 export const description: INodeProperties[] = [
 	{
@@ -17,13 +18,20 @@ export const description: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'URLs',
+				name: 'Crawler',
 				value: 'urls',
-				description: 'Crawl and extract from URLs',
+				description: 'Directly crawl URLs with optional JavaScript rendering, screenshots, and multiple output formats',
 				action: 'Crawl urls',
+			},
+			{
+				name: 'Headful Browser',
+				value: 'headfulBrowser',
+				description: 'Use premium headed-browser crawling with residential proxies and advanced anti-bot evasion',
+				action: 'Crawl urls with headful browser',
 			},
 		],
 		default: 'urls',
 	},
 	...urls.description,
+	...headfulBrowser.description,
 ];

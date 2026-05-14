@@ -1,14 +1,14 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties } from 'n8n-workflow';
 import { crawleoApiRequest } from '../../transport';
 import { updateDisplayOptions } from '../../display';
-import { crawlerOptions } from '../../descriptions/common.descriptions';
+import { headfulBrowserOptions } from '../../descriptions/common.descriptions';
 import { removeEmptyFields, wrapResponse } from '../utils';
 
 export const properties: INodeProperties[] = [
 	{
 		displayName: 'URLs',
 		name: 'urls',
-		description: 'One or more URLs to crawl with Crawleo. Multiple URLs are sent as a comma-separated list.',
+		description: 'One or more URLs to crawl with Crawleo\'s premium headful browser. Use this only when standard crawling is blocked or you need advanced anti-bot evasion.',
 		type: 'string',
 		typeOptions: {
 			multipleValues: true,
@@ -29,14 +29,14 @@ export const properties: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add option',
 		default: {},
-		options: crawlerOptions,
+		options: headfulBrowserOptions,
 	},
 ];
 
 const displayOptions = {
 	show: {
 		resource: ['crawler'],
-		operation: ['urls'],
+		operation: ['headfulBrowser'],
 	},
 };
 
@@ -52,7 +52,7 @@ export async function execute(this: IExecuteFunctions, index: number) {
 		...options,
 	});
 
-	const responseData = await crawleoApiRequest.call(this, 'GET', '/crawl', {}, queryParams);
+	const responseData = await crawleoApiRequest.call(this, 'GET', '/headful-browser', {}, queryParams);
 
 	return wrapResponse.call(this, responseData as IDataObject | IDataObject[], index);
 }

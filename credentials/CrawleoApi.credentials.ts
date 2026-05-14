@@ -10,7 +10,7 @@ import {
 export class CrawleoApi implements ICredentialType {
 	name = 'crawleoApi';
 	displayName = 'Crawleo API';
-	documentationUrl = 'https://www.crawleo.dev/docs';
+	documentationUrl = 'https://docs.crawleo.dev/authentication';
 	icon: Icon = 'file:icons/img.svg';
 	properties: INodeProperties[] = [
 		{
@@ -25,8 +25,8 @@ export class CrawleoApi implements ICredentialType {
 			displayName: 'Base URL',
 			name: 'baseUrl',
 			type: 'string',
-			description: "Base URL of Crawleo's API",
-			default: 'https://api.crawleo.dev/api/v1',
+			description: "Base URL of Crawleo's API. Use the default unless Crawleo support provides a custom endpoint.",
+			default: 'https://api.crawleo.dev',
 		},
 	];
 
@@ -42,12 +42,13 @@ export class CrawleoApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: '={{$credentials.baseUrl}}',
+			baseURL: '={{$credentials.baseUrl.replace(/\\/api\\/v1$/, "")}}',
 			url: '/search',
 			method: 'GET',
 			headers: {
 				'x-api-key': '={{$credentials.apiKey}}',
 				'X-Client-Source': 'n8n',
+				Accept: 'application/json',
 			},
 			qs: {
 				query: 'Hello from n8n!',

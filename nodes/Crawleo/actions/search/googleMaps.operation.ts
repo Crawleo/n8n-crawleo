@@ -1,25 +1,21 @@
 import type { IDataObject, IExecuteFunctions, INodeProperties } from 'n8n-workflow';
 import { crawleoApiRequest } from '../../transport';
 import { updateDisplayOptions } from '../../display';
-import { crawlerOptions } from '../../descriptions/common.descriptions';
+import { googleMapsOptions } from '../../descriptions';
 import { removeEmptyFields, wrapResponse } from '../utils';
 
 export const properties: INodeProperties[] = [
 	{
-		displayName: 'URLs',
-		name: 'urls',
-		description: 'One or more URLs to crawl with Crawleo. Multiple URLs are sent as a comma-separated list.',
+		displayName: 'Query',
+		name: 'q',
+		description: 'Google Maps search query. Accepts business names, landmarks, addresses, keywords, and category plus location queries.',
 		type: 'string',
-		typeOptions: {
-			multipleValues: true,
-			multipleValueButtonText: 'Add URL',
-		},
 		required: true,
-		default: [],
-		placeholder: 'https://www.example.com/page',
+		default: '',
+		placeholder: 'e.g. restaurants in Paris',
 		displayOptions: {
 			show: {
-				resource: ['crawler'],
+				resource: ['search'],
 			},
 		},
 	},
@@ -29,30 +25,29 @@ export const properties: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add option',
 		default: {},
-		options: crawlerOptions,
+		options: googleMapsOptions,
 	},
 ];
 
 const displayOptions = {
 	show: {
-		resource: ['crawler'],
-		operation: ['urls'],
+		resource: ['search'],
+		operation: ['googleMaps'],
 	},
 };
 
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, index: number) {
-	const urlsInput = this.getNodeParameter('urls', index) as string[] | string;
-	const urls = Array.isArray(urlsInput) ? urlsInput : [urlsInput];
+	const q = this.getNodeParameter('q', index) as string;
 	const options = this.getNodeParameter('options', index) as IDataObject;
 
 	const queryParams = removeEmptyFields({
-		urls: urls.filter((url) => url).join(','),
+		q,
 		...options,
 	});
 
-	const responseData = await crawleoApiRequest.call(this, 'GET', '/crawl', {}, queryParams);
+	const responseData = await crawleoApiRequest.call(this, 'GET', '/google-maps', {}, queryParams);
 
 	return wrapResponse.call(this, responseData as IDataObject | IDataObject[], index);
 }

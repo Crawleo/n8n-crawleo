@@ -8,6 +8,16 @@ import type {
 	IRequestOptions,
 } from 'n8n-workflow';
 
+function getBaseUrl(baseUrl?: unknown) {
+	if (typeof baseUrl !== 'string' || baseUrl.length === 0) {
+		return 'https://api.crawleo.dev';
+	}
+
+	return baseUrl
+		.replace(/\/$/, '')
+		.replace(/\/api\/v1$/, '');
+}
+
 export async function crawleoApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
 	method: IHttpRequestMethods,
@@ -16,19 +26,17 @@ export async function crawleoApiRequest(
 	query: IDataObject = {},
 	uri?: string,
 	headers: IDataObject = {},
-	option: IDataObject = {json: true},
+	option: IDataObject = { json: true },
 ) {
 	const credentials = await this.getCredentials('crawleoApi');
-	const baseUrl =
-		(typeof credentials.baseUrl === 'string' && credentials.baseUrl.length > 0)
-			? credentials.baseUrl.replace(/\/$/, '')
-			: 'https://api.crawleo.dev/api/v1';
+	const baseUrl = getBaseUrl(credentials.baseUrl);
 
 	const apiURL = `${baseUrl}${resource}`;
 
 	const options: IRequestOptions = {
 		headers: {
 			'Content-Type': 'application/json',
+			Accept: 'application/json',
 			'x-api-key': credentials.apiKey as string,
 			'X-Client-Source': 'n8n',
 		},
@@ -57,7 +65,6 @@ export async function crawleoApiRequest(
 		};
 		return await this.helpers.httpRequestWithAuthentication.call(this, 'crawleoApi', httpOptions);
 	} catch (error) {
-
 		throw error;
 	}
 }
