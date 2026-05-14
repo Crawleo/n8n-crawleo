@@ -1,5 +1,5 @@
 /* eslint-disable n8n-nodes-base/node-filename-against-convention */
-import { NodeConnectionType, type INodeTypeDescription } from 'n8n-workflow';
+import { NodeConnectionTypes, type INodeTypeDescription } from 'n8n-workflow';
 
 import * as search from './search';
 import * as crawler from './crawler';
@@ -16,7 +16,7 @@ export const description: INodeTypeDescription = {
 		name: 'Crawleo',
 	},
 	usableAsTool: true,
-	inputs: [NodeConnectionType.Main],
+	inputs: [NodeConnectionTypes.Main],
 	outputs: `={{['main']}}` as const,
 	credentials: [
 		{
