@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "crawleo": {
+      "url": "https://api.crawleo.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${CRAWLEO_API_KEY}"
+      }
+    }
+  }
+}
